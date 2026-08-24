@@ -36,8 +36,8 @@ const seedData = async () => {
     // 3. Seed Employees corresponding to the 3 Exam User Roles (Employee, Manager, HR)
     const employees = await Employee.insertMany([
       {
-        name: 'John Doe',
-        email: 'john@techsolutions.com',
+        name: 'Jalpesh',
+        email: 'jalpesh@techsolutions.com',
         password: hashedPassword,
         department: 'Information Technology',
         designation: 'Software Engineer',
@@ -45,22 +45,22 @@ const seedData = async () => {
         leaveBalance: 20,
       },
       {
-        name: 'Alice Williams',
-        email: 'hr@techsolutions.com',
-        password: hashedPassword,
-        department: 'Human Resources',
-        designation: 'HR Specialist',
-        role: 'hr',
-        leaveBalance: 25,
-      },
-      {
-        name: 'Sarah Connor',
-        email: 'manager@techsolutions.com',
+        name: 'Rushabh',
+        email: 'rushabh@techsolutions.com',
         password: hashedPassword,
         department: 'Engineering',
         designation: 'Team Manager',
         role: 'manager',
         leaveBalance: 22,
+      },
+      {
+        name: 'Admin Office',
+        email: 'admin@techsolutions.com',
+        password: hashedPassword,
+        department: 'Human Resources',
+        designation: 'HR Specialist',
+        role: 'hr',
+        leaveBalance: 25,
       },
     ]);
     console.log(`[Seed] Seeded ${employees.length} employees.`);
@@ -104,9 +104,9 @@ const seedData = async () => {
 
     console.log('[Seed] Database seeded successfully!');
     console.log('\n--- Test Credentials (The 3 Exam Roles: Employee, Manager, HR) ---');
-    console.log('1. Employee: john@techsolutions.com     / password123 (Role: employee)');
-    console.log('2. Manager:  manager@techsolutions.com  / password123 (Role: manager)');
-    console.log('3. HR:       hr@techsolutions.com       / password123 (Role: hr)');
+    console.log('1. Employee: jalpesh@techsolutions.com  / password123 (Name: Jalpesh, Role: employee)');
+    console.log('2. Manager:  rushabh@techsolutions.com  / password123 (Name: Rushabh, Role: manager)');
+    console.log('3. HR:       admin@techsolutions.com    / password123 (Name: Admin Office, Role: hr)');
     console.log('-------------------------------------------------------------------\n');
 
     await mongoose.connection.close();

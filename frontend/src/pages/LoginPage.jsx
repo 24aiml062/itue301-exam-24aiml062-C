@@ -107,23 +107,23 @@ const LoginPage = () => {
             <button
               type="button"
               className="btn-demo"
-              onClick={() => handleQuickLogin('john@techsolutions.com', 'password123')}
+              onClick={() => handleQuickLogin('jalpesh@techsolutions.com', 'password123')}
             >
-              👤 Employee (John)
+              👤 Employee (Jalpesh)
             </button>
             <button
               type="button"
               className="btn-demo"
-              onClick={() => handleQuickLogin('manager@techsolutions.com', 'password123')}
+              onClick={() => handleQuickLogin('rushabh@techsolutions.com', 'password123')}
             >
-              👔 Manager (Sarah)
+              👔 Manager (Rushabh)
             </button>
             <button
               type="button"
               className="btn-demo"
-              onClick={() => handleQuickLogin('hr@techsolutions.com', 'password123')}
+              onClick={() => handleQuickLogin('admin@techsolutions.com', 'password123')}
             >
-              🛡️ HR (Alice)
+              🛡️ HR (Admin Office)
             </button>
           </div>
         </div>
