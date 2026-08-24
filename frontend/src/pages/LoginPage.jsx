@@ -67,7 +67,7 @@ const LoginPage = () => {
               id="email"
               type="email"
               className="form-control"
-              placeholder="e.g. john@techsolutions.com"
+              placeholder="e.g. jalpesh@charusat.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -107,21 +107,21 @@ const LoginPage = () => {
             <button
               type="button"
               className="btn-demo"
-              onClick={() => handleQuickLogin('jalpesh@techsolutions.com', 'password123')}
+              onClick={() => handleQuickLogin('jalpesh@charusat.com', 'password123')}
             >
               👤 Employee (Jalpesh)
             </button>
             <button
               type="button"
               className="btn-demo"
-              onClick={() => handleQuickLogin('rushabh@techsolutions.com', 'password123')}
+              onClick={() => handleQuickLogin('rushabh@charusat.com', 'password123')}
             >
               👔 Manager (Rushabh)
             </button>
             <button
               type="button"
               className="btn-demo"
-              onClick={() => handleQuickLogin('admin@techsolutions.com', 'password123')}
+              onClick={() => handleQuickLogin('admin@charusat.com', 'password123')}
             >
               🛡️ HR (Admin Office)
             </button>

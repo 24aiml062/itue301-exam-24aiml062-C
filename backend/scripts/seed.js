@@ -37,7 +37,7 @@ const seedData = async () => {
     const employees = await Employee.insertMany([
       {
         name: 'Jalpesh',
-        email: 'jalpesh@techsolutions.com',
+        email: 'jalpesh@charusat.com',
         password: hashedPassword,
         department: 'Information Technology',
         designation: 'Software Engineer',
@@ -46,7 +46,7 @@ const seedData = async () => {
       },
       {
         name: 'Rushabh',
-        email: 'rushabh@techsolutions.com',
+        email: 'rushabh@charusat.com',
         password: hashedPassword,
         department: 'Engineering',
         designation: 'Team Manager',
@@ -55,7 +55,7 @@ const seedData = async () => {
       },
       {
         name: 'Admin Office',
-        email: 'admin@techsolutions.com',
+        email: 'admin@charusat.com',
         password: hashedPassword,
         department: 'Human Resources',
         designation: 'HR Specialist',
@@ -104,9 +104,9 @@ const seedData = async () => {
 
     console.log('[Seed] Database seeded successfully!');
     console.log('\n--- Test Credentials (The 3 Exam Roles: Employee, Manager, HR) ---');
-    console.log('1. Employee: jalpesh@techsolutions.com  / password123 (Name: Jalpesh, Role: employee)');
-    console.log('2. Manager:  rushabh@techsolutions.com  / password123 (Name: Rushabh, Role: manager)');
-    console.log('3. HR:       admin@techsolutions.com    / password123 (Name: Admin Office, Role: hr)');
+    console.log('1. Employee: jalpesh@charusat.com  / password123 (Name: Jalpesh, Role: employee)');
+    console.log('2. Manager:  rushabh@charusat.com  / password123 (Name: Rushabh, Role: manager)');
+    console.log('3. HR:       admin@charusat.com    / password123 (Name: Admin Office, Role: hr)');
     console.log('-------------------------------------------------------------------\n');
 
     await mongoose.connection.close();

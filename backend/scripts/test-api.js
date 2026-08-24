@@ -58,7 +58,7 @@ async function runTests() {
     // 3. Employee Login (Task 3)
     console.log('3. Testing Authentication: POST /api/v1/auth/login');
     const loginRes = await request('POST', '/auth/login', {
-      email: 'john@techsolutions.com',
+      email: 'jalpesh@charusat.com',
       password: 'password123',
     });
     console.log(`   Status: ${loginRes.status}, Logged in as: ${loginRes.data.employee.name} (${loginRes.data.employee.role})`);
@@ -112,7 +112,7 @@ async function runTests() {
     // 7. HR Login & Status Update (Task 3)
     console.log('7. Testing HR Login & Leave Approval: PATCH /api/v1/leaves/:id/status');
     const hrLogin = await request('POST', '/auth/login', {
-      email: 'hr@techsolutions.com',
+      email: 'admin@charusat.com',
       password: 'password123',
     });
     const hrToken = hrLogin.data.token;
