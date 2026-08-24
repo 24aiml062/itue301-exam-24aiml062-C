@@ -5,7 +5,7 @@
 **Student Roll No:** `24AIML062` | **Batch:** `C`  
 **Tech Stack:** React (Vite) + Express.js + MongoDB with Mongoose  
 **Repository Name:** `itue301-exam-24aiml062-C`  
-**Latest Commit SHA:** `018d3729dca11c5ac91ba17777547a094a43d064`  
+**Latest Commit SHA:** `1024ba603602cb5591e0d8561d9a3fe4ed9f34b2`  
 **Report PDF Name:** `24aiml062_SetC_Report.pdf`
 
 ---
