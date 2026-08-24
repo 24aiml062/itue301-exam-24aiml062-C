@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="nav-container">
         <NavLink to={isAuthenticated ? '/my-leaves' : '/'} className="nav-brand">
           <span style={{ fontSize: '1.4rem' }}>🏛️</span>
-          <span>CHARUSAT Leave Portal</span>
+          <span>CHARUSAT Leave Portal Employee</span>
         </NavLink>
 
         <nav>
