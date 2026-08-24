@@ -53,7 +53,7 @@ const LoginPage = () => {
           <h1 className="page-title" style={{ fontSize: '1.5rem', marginTop: '0.5rem' }}>
             Employee Portal Login
           </h1>
-          <p className="page-subtitle">TechSolutions Leave Management System</p>
+          <p className="page-subtitle">CHARUSAT Leave Portal</p>
         </div>
 
         {error && <div className="alert alert-danger">{error}</div>}

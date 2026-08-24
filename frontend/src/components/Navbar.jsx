@@ -19,8 +19,8 @@ const Navbar = () => {
     <header className="navbar">
       <div className="nav-container">
         <NavLink to={isAuthenticated ? '/my-leaves' : '/'} className="nav-brand">
-          <span style={{ fontSize: '1.4rem' }}>🏖️</span>
-          <span>TechSolutions Leave Portal</span>
+          <span style={{ fontSize: '1.4rem' }}>🏛️</span>
+          <span>CHARUSAT Leave Portal</span>
         </NavLink>
 
         <nav>
