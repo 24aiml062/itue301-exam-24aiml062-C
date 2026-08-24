@@ -228,7 +228,7 @@ const ApplyLeavePage = () => {
               }}
             >
               <span style={{ fontWeight: 600, color: '#334155' }}>
-                Computed Duration (Task 2 state):
+                Duration:
               </span>
               <span
                 style={{

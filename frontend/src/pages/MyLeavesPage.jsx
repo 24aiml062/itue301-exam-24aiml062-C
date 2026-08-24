@@ -118,7 +118,7 @@ const MyLeavesPage = () => {
           </div>
 
           <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
-            Showing <strong>{filteredLeaves.length}</strong> of <strong>{leaves.length}</strong> records (Client-side filtered)
+            Showing <strong>{filteredLeaves.length}</strong> of <strong>{leaves.length}</strong> records
           </div>
         </div>
       </div>
