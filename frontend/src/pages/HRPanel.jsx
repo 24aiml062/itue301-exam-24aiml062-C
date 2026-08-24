@@ -4,15 +4,15 @@ import { useAuth } from '../context/AuthContext';
 
 /**
  * Task 2 & Mandatory Requirement: HRPanel
- * Lazy-loaded component requiring role 'hr'.
- * Displays all leave requests across the company with Approve/Reject actions calling PATCH /api/v1/leaves/:id/status.
+ * Lazy-loaded component requiring role 'hr' (React.lazy + Suspense).
+ * Purpose: HR generates and reviews company-wide leave reports and analytics.
  */
 const HRPanel = () => {
   const { token } = useAuth();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(null);
   const [message, setMessage] = useState(null);
+  const [departmentFilter, setDepartmentFilter] = useState('All');
 
   const fetchAllRequests = async () => {
     try {
@@ -35,38 +35,6 @@ const HRPanel = () => {
     fetchAllRequests();
   }, [token]);
 
-  const handleStatusUpdate = async (id, newStatus) => {
-    setActionLoading(id);
-    setMessage(null);
-
-    try {
-      const res = await axios.patch(
-        `/api/v1/leaves/${id}/status`,
-        { status: newStatus },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (res.data.success) {
-        setMessage({
-          type: 'success',
-          text: `Leave request has been successfully ${newStatus}!`,
-        });
-        // Update local state
-        setRequests((prev) =>
-          prev.map((item) => (item._id === id ? res.data.data : item))
-        );
-      }
-    } catch (err) {
-      const errText =
-        err.response?.data?.message || `Failed to update status to ${newStatus}`;
-      setMessage({ type: 'danger', text: errText });
-    } finally {
-      setActionLoading(null);
-    }
-  };
-
   const getBadgeStyle = (status) => {
     const s = (status || 'pending').toLowerCase();
     switch (s) {
@@ -81,18 +49,40 @@ const HRPanel = () => {
     }
   };
 
+  // Compute metrics for HR Report
+  const totalCount = requests.length;
+  const pendingCount = requests.filter((r) => r.status === 'pending').length;
+  const approvedCount = requests.filter((r) => r.status === 'approved').length;
+  const rejectedCount = requests.filter((r) => r.status === 'rejected').length;
+
+  const departments = ['All', ...new Set(requests.map((r) => r.employeeId?.department).filter(Boolean))];
+
+  const filteredRequests = requests.filter((req) => {
+    if (departmentFilter === 'All') return true;
+    return req.employeeId?.department === departmentFilter;
+  });
+
+  const handlePrintReport = () => {
+    window.print();
+  };
+
   return (
     <div>
       <div className="page-header">
         <div>
-          <h1 className="page-title">🛡️ HR Administration Panel</h1>
+          <h1 className="page-title">📊 HR Leave Reports & Analytics</h1>
           <p className="page-subtitle">
-            Review, approve, or reject employee leave applications across the organization.
+            Organization-wide leave summary and departmental report generation.
           </p>
         </div>
-        <button onClick={fetchAllRequests} className="btn" style={{ background: '#e2e8f0', color: '#334155' }}>
-          🔄 Refresh Requests
-        </button>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button onClick={fetchAllRequests} className="btn" style={{ background: '#e2e8f0', color: '#334155' }}>
+            🔄 Refresh
+          </button>
+          <button onClick={handlePrintReport} className="btn btn-primary">
+            🖨️ Print / Export Report
+          </button>
+        </div>
       </div>
 
       {message && (
@@ -101,10 +91,30 @@ const HRPanel = () => {
         </div>
       )}
 
+      {/* Metric Cards for HR Overview */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div className="card" style={{ textAlign: 'center', padding: '1rem' }}>
+          <div style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Total Requests</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#2563eb' }}>{totalCount}</div>
+        </div>
+        <div className="card" style={{ textAlign: 'center', padding: '1rem' }}>
+          <div style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Pending Review</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#d97706' }}>{pendingCount}</div>
+        </div>
+        <div className="card" style={{ textAlign: 'center', padding: '1rem' }}>
+          <div style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Approved Leaves</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#16a34a' }}>{approvedCount}</div>
+        </div>
+        <div className="card" style={{ textAlign: 'center', padding: '1rem' }}>
+          <div style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Rejected Leaves</div>
+          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#dc2626' }}>{rejectedCount}</div>
+        </div>
+      </div>
+
       {loading ? (
         <div className="loading-indicator">
           <div className="spinner"></div>
-          <p>Loading company-wide leave requests...</p>
+          <p>Loading company-wide leave reports...</p>
         </div>
       ) : requests.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
@@ -112,9 +122,26 @@ const HRPanel = () => {
         </div>
       ) : (
         <div className="card">
-          <h2 style={{ fontSize: '1.15rem', marginBottom: '0.75rem' }}>
-            All Company Requests ({requests.length})
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <h2 style={{ fontSize: '1.15rem' }}>
+              Company Leave Records ({filteredRequests.length})
+            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Filter Department:</span>
+              <select
+                className="filter-select"
+                value={departmentFilter}
+                onChange={(e) => setDepartmentFilter(e.target.value)}
+              >
+                {departments.map((dept) => (
+                  <option key={dept} value={dept}>
+                    {dept}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -122,18 +149,16 @@ const HRPanel = () => {
                   <th>Employee</th>
                   <th>Department</th>
                   <th>Leave Type</th>
-                  <th>Dates</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
                   <th>Days</th>
                   <th>Reason</th>
                   <th>Status</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {requests.map((req) => {
+                {filteredRequests.map((req) => {
                   const badge = getBadgeStyle(req.status);
-                  const isPending = req.status === 'pending';
-                  const isProcessing = actionLoading === req._id;
 
                   return (
                     <tr key={req._id}>
@@ -150,13 +175,15 @@ const HRPanel = () => {
                         </span>
                       </td>
                       <td style={{ fontSize: '0.85rem' }}>
-                        {new Date(req.fromDate).toLocaleDateString()} to{' '}
+                        {new Date(req.fromDate).toLocaleDateString()}
+                      </td>
+                      <td style={{ fontSize: '0.85rem' }}>
                         {new Date(req.toDate).toLocaleDateString()}
                       </td>
                       <td>
                         <strong>{req.days}</strong> d
                       </td>
-                      <td style={{ maxWidth: '220px', fontSize: '0.85rem' }}>
+                      <td style={{ maxWidth: '240px', fontSize: '0.85rem' }}>
                         {req.reason || '—'}
                       </td>
                       <td>
@@ -173,26 +200,6 @@ const HRPanel = () => {
                         >
                           {req.status}
                         </span>
-                      </td>
-                      <td>
-                        <div style={{ display: 'flex', gap: '0.35rem' }}>
-                          <button
-                            onClick={() => handleStatusUpdate(req._id, 'approved')}
-                            disabled={isProcessing || req.status === 'approved'}
-                            className="btn btn-success btn-sm"
-                            title="Approve Request"
-                          >
-                            ✓ Approve
-                          </button>
-                          <button
-                            onClick={() => handleStatusUpdate(req._id, 'rejected')}
-                            disabled={isProcessing || req.status === 'rejected'}
-                            className="btn btn-danger btn-sm"
-                            title="Reject Request"
-                          >
-                            ✗ Reject
-                          </button>
-                        </div>
                       </td>
                     </tr>
                   );

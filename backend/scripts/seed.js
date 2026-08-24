@@ -9,8 +9,10 @@ dotenv.config({ path: __dirname + '/../.env' });
 
 const seedData = async () => {
   try {
-    const mongoUri =
-      process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/itue301_leave_management';
+    const mongoUri = process.env.MONGO_URI;
+    if (!mongoUri) {
+      throw new Error('MONGO_URI is not defined in environment variables');
+    }
     await mongoose.connect(mongoUri);
     console.log('[Seed] Connected to MongoDB...');
 

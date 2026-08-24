@@ -109,36 +109,56 @@ async function runTests() {
     const firstReq = myLeavesRes.data.data[0];
     console.log(`   Latest Record Leave Type Populated: "${firstReq.leaveTypeId?.name}" (Max: ${firstReq.leaveTypeId?.maxDaysPerYear}d)\n`);
 
-    // 7. HR Login & Status Update (Task 3)
-    console.log('7. Testing HR Login & Leave Approval: PATCH /api/v1/leaves/:id/status');
-    const hrLogin = await request('POST', '/auth/login', {
-      email: 'admin@charusat.com',
+    // 7. Test Role Authorization on PATCH /leaves/:id/status (Requirement 1)
+    console.log('7. Testing Employee Authorization Block on PATCH /api/v1/leaves/:id/status');
+    const empForbiddenRes = await request(
+      'PATCH',
+      `/leaves/${createdRequestId}/status`,
+      { status: 'approved' },
+      empToken
+    );
+    console.log(`   Employee PATCH Status: ${empForbiddenRes.status} (Expected 403 Forbidden)`);
+    console.log(`   Forbidden Message: "${empForbiddenRes.data.message}"\n`);
+
+    // 8. Manager Login & Approval (Task 3 & Requirement 1)
+    console.log('8. Testing Manager Login & Approval: PATCH /api/v1/leaves/:id/status');
+    const managerLogin = await request('POST', '/auth/login', {
+      email: 'rushabh@charusat.com',
       password: 'password123',
     });
-    const hrToken = hrLogin.data.token;
+    const managerToken = managerLogin.data.token;
 
-    // Test invalid status validation
+    // Test invalid status validation (Task 3 requirement: 400 Bad Request)
     const invalidStatusRes = await request(
       'PATCH',
       `/leaves/${createdRequestId}/status`,
       { status: 'invalid_status' },
-      hrToken
+      managerToken
     );
     console.log(`   Testing Invalid Status ('invalid_status'): Status ${invalidStatusRes.status} (Expected 400)`);
     console.log(`   Validation Message: "${invalidStatusRes.data.message}"`);
 
-    // Test valid status update to 'approved'
+    // Test valid status update to 'approved' (Task 3 requirement: 200 OK)
     const approveRes = await request(
       'PATCH',
       `/leaves/${createdRequestId}/status`,
       { status: 'approved' },
-      hrToken
+      managerToken
     );
-    console.log(`   Testing Valid Status ('approved'): Status ${approveRes.status} (Expected 200)`);
+    console.log(`   Testing Manager Approval ('approved'): Status ${approveRes.status} (Expected 200)`);
     console.log(`   Updated Request Status: ${approveRes.data.data.status}\n`);
 
+    // 9. HR Report Generation access: GET /api/v1/leaves
+    console.log('9. Testing HR Report Access: GET /api/v1/leaves');
+    const hrLogin = await request('POST', '/auth/login', {
+      email: 'admin@charusat.com',
+      password: 'password123',
+    });
+    const hrReportRes = await request('GET', '/leaves', null, hrLogin.data.token);
+    console.log(`   HR Report Access Status: ${hrReportRes.status} (Expected 200), Records: ${hrReportRes.data.count}\n`);
+
     console.log('==================================================');
-    console.log('🎉 ALL TASKS VERIFIED SUCCESSFULLY AND PASSING!');
+    console.log('🎉 ALL EXAM REQUIREMENTS AND RESTRICTIONS VERIFIED!');
     console.log('==================================================');
   } catch (err) {
     console.error('Test execution failed:', err);
