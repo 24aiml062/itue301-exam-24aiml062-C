@@ -79,7 +79,9 @@ const Navbar = () => {
           <div className="nav-user">
             <div className="user-badge">
               <span>👤 {employee.name}</span>
-              <span className="role-tag">{role}</span>
+              {role && role !== 'employee' && (
+                <span className="role-tag">{role}</span>
+              )}
               <span style={{ color: '#059669', fontSize: '0.8rem', fontWeight: 600 }}>
                 ({employee.leaveBalance ?? 20} days left)
               </span>

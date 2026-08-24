@@ -130,7 +130,7 @@ const LoginPage = () => {
               className="btn-demo"
               onClick={() => handleQuickLogin('24aiml062@charusat.edu.in', 'password123')}
             >
-              🎓 Student (24AIML062)
+              🎓 Student
             </button>
           </div>
         </div>
