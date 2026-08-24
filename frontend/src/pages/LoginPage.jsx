@@ -103,20 +103,13 @@ const LoginPage = () => {
           <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600, marginBottom: '0.5rem' }}>
             Quick Demo Logins (Click to autofill):
           </p>
-          <div className="quick-login-grid">
+          <div className="quick-login-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
             <button
               type="button"
               className="btn-demo"
               onClick={() => handleQuickLogin('john@techsolutions.com', 'password123')}
             >
               👤 Employee (John)
-            </button>
-            <button
-              type="button"
-              className="btn-demo"
-              onClick={() => handleQuickLogin('hr@techsolutions.com', 'password123')}
-            >
-              🛡️ HR Lead (Alice)
             </button>
             <button
               type="button"
@@ -128,9 +121,9 @@ const LoginPage = () => {
             <button
               type="button"
               className="btn-demo"
-              onClick={() => handleQuickLogin('24aiml062@charusat.edu.in', 'password123')}
+              onClick={() => handleQuickLogin('hr@techsolutions.com', 'password123')}
             >
-              🎓 Student
+              🛡️ HR (Alice)
             </button>
           </div>
         </div>

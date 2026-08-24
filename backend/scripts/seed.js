@@ -33,14 +33,14 @@ const seedData = async () => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash('password123', salt);
 
-    // 3. Seed Employees (Employee, Manager, HR)
+    // 3. Seed Employees corresponding to the 3 Exam User Roles (Employee, Manager, HR)
     const employees = await Employee.insertMany([
       {
         name: 'John Doe',
         email: 'john@techsolutions.com',
         password: hashedPassword,
         department: 'Information Technology',
-        designation: 'Senior Software Engineer',
+        designation: 'Software Engineer',
         role: 'employee',
         leaveBalance: 20,
       },
@@ -49,7 +49,7 @@ const seedData = async () => {
         email: 'hr@techsolutions.com',
         password: hashedPassword,
         department: 'Human Resources',
-        designation: 'HR Lead',
+        designation: 'HR Specialist',
         role: 'hr',
         leaveBalance: 25,
       },
@@ -58,18 +58,9 @@ const seedData = async () => {
         email: 'manager@techsolutions.com',
         password: hashedPassword,
         department: 'Engineering',
-        designation: 'Engineering Manager',
+        designation: 'Team Manager',
         role: 'manager',
         leaveBalance: 22,
-      },
-      {
-        name: 'Student',
-        email: '24aiml062@charusat.edu.in',
-        password: hashedPassword,
-        department: 'Information Technology',
-        designation: 'Student',
-        role: 'employee',
-        leaveBalance: 18,
       },
     ]);
     console.log(`[Seed] Seeded ${employees.length} employees.`);
@@ -112,12 +103,11 @@ const seedData = async () => {
     console.log('[Seed] Seeded initial leave requests.');
 
     console.log('[Seed] Database seeded successfully!');
-    console.log('\n--- Test Credentials ---');
-    console.log('1. Employee:  john@techsolutions.com     / password123 (Role: employee)');
-    console.log('2. HR Lead:   hr@techsolutions.com       / password123 (Role: hr)');
-    console.log('3. Manager:   manager@techsolutions.com  / password123 (Role: manager)');
-    console.log('4. Candidate: 24aiml062@charusat.edu.in  / password123 (Role: employee)');
-    console.log('------------------------\n');
+    console.log('\n--- Test Credentials (The 3 Exam Roles: Employee, Manager, HR) ---');
+    console.log('1. Employee: john@techsolutions.com     / password123 (Role: employee)');
+    console.log('2. Manager:  manager@techsolutions.com  / password123 (Role: manager)');
+    console.log('3. HR:       hr@techsolutions.com       / password123 (Role: hr)');
+    console.log('-------------------------------------------------------------------\n');
 
     await mongoose.connection.close();
     process.exit(0);
